@@ -1,0 +1,121 @@
+{
+    "__default__" :
+    {
+        "t" : "35:00:00",
+        "N" : 1,
+        "partition" : "exacloud",
+        "J" : "{rule}.{wildcards}",
+        "o" : "logs/{rule}/{wildcards}_{rule}%j.out",
+        "e" : "logs/{rule}/{wildcards}_{rule}%j.err",
+        "c" : 4,
+        "mem" : 45000
+    },
+    "bwa" :
+    {
+        "J" : "bwa",
+        "e" : "logs/bwa/bwa%j.err",
+        "o" : "logs/bwa/bwa%j.out",
+        "c" : 12,
+        "mem" : 64000
+    },
+    "ciri" :
+    {
+        "J" : "ciri",
+        "e" : "logs/ciri/ciri%j.err",
+        "o" : "logs/ciri/ciri%j.out",
+        "c" : 12,
+        "mem" : 64000
+    },
+    "ciri_junction_counts" :
+    {
+        "J" : "ciri_junction_counts",
+        "e" : "logs/ciri_junction_counts/ciri_junction_counts%j.err",
+        "o" : "logs/ciri_junction_counts/ciri_junction_counts%j.out",
+        "c" : 1,
+        "mem" : 5400
+    },
+    "deseq2_init" :
+    {
+        "J" : "deseq2_init",
+        "e" : "logs/deseq2_init/deseq2_init_%j.err",
+        "o" : "logs/deseq2_init/deseq2_init_%j.out",
+        "c" : 20,
+        "mem" : 80000
+    },
+    "deseq2_pairwise" :
+    {
+        "J" : "deseq2_pairwise",
+        "e" : "logs/deseq2_pairwise/deseq2_pairwise_%j.err",
+        "o" : "logs/deseq2_pairwise/deseq2_pairwise_%j.out",
+        "c" : 8,
+        "mem":80000
+    },
+    "deseq2_group" :
+    {
+        "J" : "deseq2_group",
+        "e" : "logs/deseq2_group/deseq2_group_%j.err",
+        "o" : "logs/deseq2_group/deseq2_group_%j.out",
+        "mem" : 30000
+    },
+    "deseq2_QC" :
+    {
+        "J" : "deseq2_QC",
+        "e" : "logs/deseq2_QC/deseq2_QC_%j.err",
+        "o" : "logs/deseq2_QC/deseq2_QC_%j.out",
+        "mem" : 30000
+    },
+    "deseq2_qplot" :
+    {
+        "J" : "deseq2_qplot",
+        "e" : "logs/deseq2_qplot/deseq2_qplot_%j.err",
+        "o" : "logs/deseq2_qplot/deseq2_qplot_%j.out",
+        "mem" : 30000
+    },
+    "deseq2_density" :
+    {
+        "J" : "deseq2_density",
+        "e" : "logs/deseq2_density/deseq2_density_%j.err",
+        "o" : "logs/deseq2_density/deseq2_density_%j.out",
+        "mem" : 30000
+    },
+    "GO" :
+    {
+        "J" : "GO",
+        "e" : "logs/GO/GO%j.err",
+        "o" : "logs/GO/GO%j.out",
+        "c" : 6,
+        "mem" : 64000
+    },
+    "volcano" :
+    {
+        "J" : "volcano",
+        "e" : "logs/volcano/volcano%j.err",
+        "o" : "logs/volcano/volcano%j.out",
+        "c" : 1,
+        "mem" : 5400
+    },
+    "permutation" :
+    {
+        "J" : "permutation",
+        "e" : "logs/permutation/permutation%j.err",
+        "o" : "logs/permutation/permutation%j.out",
+        "c" : 12,
+        "mem" : 80000
+    },
+    "run_glimma" :
+    {
+        "J" : "run_glimma",
+        "e" : "logs/run_glimma/run_glimma%j.err",
+        "o" : "logs/run_glimma/run_glimma%j.out",
+        "c" : 1,
+        "mem" : 5400
+    },
+    "run_glimma_mds" :
+    {
+        "J" : "run_glimma_mds",
+        "e" : "logs/run_glimma_mds/run_glimma_mds%j.err",
+        "o" : "logs/run_glimma_mds/run_glimma_mds%j.out",
+        "c" : 1,
+        "mem" : 5400
+    }
+}
