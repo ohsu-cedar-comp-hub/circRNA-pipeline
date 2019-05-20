@@ -65,13 +65,13 @@ cts[is.na(cts)] <- 0
 # Order same as metadata
 cts <- cts[,order(colnames(cts))]
 
+# Ensure that we subset md to have exactly the same samples as in the counts table
+md <- md[md[[sampleID]] %in% colnames(cts),]
+dim(md)
+
 # Put sample IDs as rownames of metadata
 rownames(md) <- md[[sampleID]]
 md[[sampleID]] <- NULL
-
-# Ensure that we subset md to have exactly the same samples as in the counts table
-md <- md[colnames(cts),]
-dim(md)
 
 # Check
 stopifnot(rownames(md)==colnames(cts))

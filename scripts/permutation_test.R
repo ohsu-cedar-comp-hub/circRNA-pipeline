@@ -23,26 +23,27 @@ baseline <- contrast[[2]]
 
 target <- contrast[[1]]
 
+# Read in metadata table and order according to sampleID
 md <- read.delim(file=metadata, sep = "\t", stringsAsFactors = FALSE)
-md <- md[order(md[[sampleID]]),]
+md <- md[order(md[sampleID]),]
 
 # Read in counts table
-subdata <- read.table(counts, header=TRUE, row.names=1, sep="\t")
+subdata <- read.table(counts, header=TRUE, row.names=1, sep="\t", check.names=FALSE)
 colnames(subdata) = sub("results.ciri_out.", "", colnames(subdata))
 
 # Set all missing count values to zero
 subdata[is.na(subdata)] <- 0
 
-# Order same as metadata
+# order the same as the metadata file
 subdata <- subdata[,order(colnames(subdata))]
-
 # Extract only the Types that we want in further analysis & only the PP_ID and Status informative columns
-md <- select(md, sampleID, Type)
-md <- filter(md, !!as.name(Type) == baseline | !!as.name(Type) == target, !!as.name(sampleID) %in% colnames(subdata))
+md <- md[md[[Type]]==baseline | md[[Type]]==target,]
+md <- md[md[[sampleID]] %in% colnames(subdata),]
 
 # Keep only the PP_IDs of the types we have chosen in the metadata table above
 rownames(md) <- md[[sampleID]]
 md[[sampleID]] <- NULL
+
 keep <- colnames(subdata)[colnames(subdata) %in% rownames(md)]
 subdata <- subdata[, keep]
 dim(subdata)
