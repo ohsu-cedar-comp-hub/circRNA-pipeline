@@ -5,6 +5,7 @@ library("dplyr")
 library("vsn")
 library("RColorBrewer")
 library("genefilter")
+library("hexbin")
 
 cat(sprintf(c('Working directory',getwd())))
 
@@ -148,8 +149,10 @@ if (length(subset_cols)==1) {
   annot <- df[,subset_cols]
 }
 
+filt <- plot[apply(plot, MARGIN = 1, FUN = function(x) sd(x) != 0),]
+
 pdf(heatmap_plot)
-pheatmap(assay(rld)[topGenes,], cluster_rows=T, scale="row", fontsize=6,fontsize_row=6,fontsize_col=6,show_rownames=T, cluster_cols=T, annotation_col=annot, labels_col=as.character(rownames(df)), main = paste("Heatmap of top 50 DE genes across all samples"))
+pheatmap(filt, cluster_rows=T, scale="row", fontsize=6,fontsize_row=6,fontsize_col=6,show_rownames=T, cluster_cols=T, annotation_col=annot, labels_col=as.character(rownames(df)), main = paste("Heatmap of top 50 DE genes across all samples"))
 dev.off()
 
 saveRDS(dds, file=rds_out)
@@ -200,7 +203,8 @@ if (length(group)>0) {
   # Heatmap
   topGenes <- head(order(res.lrt$padj), 50)
   # Extract topGenes from rld object
-  plot <- assay(rld)[topGenes,] #for 2+ types
+  filt <- assay(rld)[apply(assay(rld), MARGIN = 1, FUN = function(x) sd(x) != 0),]
+  plot <- filt[topGenes,] #for 2+ types
 
   df <- as.data.frame(colData(rld))
   if (length(subset_cols)==1) {
