@@ -227,11 +227,6 @@ topVarGenes <- head(order(rowVars(assay(rld)), decreasing = TRUE), 50)
 mat  <- assay(rld)[ topVarGenes, ]
 mat  <- mat - rowMeans(mat)
 
-## Remove unique identifier .xx from heatmap data
-rownames(mat) <- sub("\\.[0-9]*", "", rownames(mat))
-iv <- match(rownames(mat), gene_id$ensembl_gene_id)
-head(gene_id[iv,])
-
 pheatmap(mat, scale="row", annotation_col = annot,fontsize=6, main = paste("Heatmap of top 50 most variable genes:", contrast[2], "vs", contrast[3]))
 dev.off()
 
