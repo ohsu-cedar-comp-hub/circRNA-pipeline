@@ -5,7 +5,6 @@ library("dplyr")
 library("vsn")
 library("RColorBrewer")
 library("genefilter")
-library("hexbin")
 
 cat(sprintf(c('Working directory',getwd())))
 
@@ -112,11 +111,6 @@ if (length(labels)>1) {
   dev.off()
 }
 
-# SD mean plot
-pdf(sd_mean_plot)
-meanSdPlot(assay(rld))
-dev.off()
-
 # Heatmap of distances
 pdf(distance_plot)
 sampleDists <- dist(t(assay(rld)))
@@ -164,9 +158,12 @@ group <- as.vector(group)
 if (length(group)>0) {
   md <- read.delim(file=metadata, sep = "\t", stringsAsFactors = FALSE)
   md <- md[order(md[sampleID]),]
-  cts <- read.table(counts, header=TRUE, row.names=1, sep="\t")
+  cts <- read.table(counts, header=TRUE, row.names=1, sep="\t", check.names=F)
+  colnames(cts) = sub("results.ciri_out.", "", colnames(cts))
+  cts[is.na(cts)] <- 0
   cts <- cts[,order(colnames(cts))]
   md <- md[md[[Type]] %in% group,]
+  md <- md[md[[sampleID]] %in% colnames(cts),]
   rownames(md) <- md[[sampleID]]
   md[[sampleID]] <- NULL
   keep <- colnames(cts)[colnames(cts) %in% rownames(md)]
@@ -175,9 +172,12 @@ if (length(group)>0) {
   md <- md[colnames(cts),]
   dim(md)
 
+  stopifnot(rownames(md)==colnames(cts))
+
   dds <- DESeqDataSetFromMatrix(countData=cts,
                               colData=md,
                               design= as.formula(paste('~',Type)))
+
   dds <- dds[ rowSums(counts(dds)) >= 1, ]
   dds.lrt <- DESeq(dds, test="LRT", reduced=~1)
   res.lrt <- results(dds.lrt, cooksCutoff = Inf, independentFiltering=FALSE)
@@ -215,8 +215,10 @@ if (length(group)>0) {
   } else {
     annot <- df[,subset_cols]
   }
+  # Remove rows with no standard deviation so that pheatmap executes properly
+  filt <- assay(rld)[apply(assay(rld), MARGIN = 1, FUN = function(x) sd(x) != 0),]
 
   pdf(sub("$", "subsetted_heatmap.pdf", Dir), 5, 5)
-  pheatmap(assay(rld)[topGenes,], cluster_rows=T, scale="row", fontsize=6,fontsize_row=6,fontsize_col=6,show_rownames=T, cluster_cols=T, annotation_col=annot, labels_col=as.character(rownames(df)), main = paste("Heatmap of top 50 DE genes across selected samples"))
+  pheatmap(filt[topGenes,], cluster_rows=T, scale="row", fontsize=6,fontsize_row=6,fontsize_col=6,show_rownames=T, cluster_cols=T, annotation_col=annot, labels_col=as.character(rownames(df)), main = paste("Heatmap of top 50 DE genes across selected samples"))
   dev.off()
 }

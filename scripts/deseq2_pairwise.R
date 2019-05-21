@@ -212,8 +212,13 @@ if (length(subset_cols)==1) {
   annot <- df[,subset_cols]
 }
 
+forHeat <- assay(rld)[topGenes,]
+
+# Remove rows with std dev = 0
+filt <- forHeat[apply(forHeat, MARGIN = 1, FUN = function(x) sd(x) != 0),]
+
 pdf(heatmap_plot)
-pheatmap(assay(rld)[topGenes,], cluster_rows=T, scale="row", fontsize=6,fontsize_row=6,fontsize_col=6,show_rownames=T, cluster_cols=T, annotation_col=annot, labels_col=as.character(rownames(df)), main = paste("Heatmap of top 50 DE genes:", contrast[2], "vs", contrast[3]))
+pheatmap(filt, cluster_rows=T, scale="row", fontsize=6,fontsize_row=6,fontsize_col=6,show_rownames=T, cluster_cols=T, annotation_col=annot, labels_col=as.character(rownames(df)), main = paste("Heatmap of top 50 DE genes:", contrast[2], "vs", contrast[3]))
 dev.off()
 
 # Variance Heatmap
@@ -221,6 +226,12 @@ pdf(var_heat)
 topVarGenes <- head(order(rowVars(assay(rld)), decreasing = TRUE), 50)
 mat  <- assay(rld)[ topVarGenes, ]
 mat  <- mat - rowMeans(mat)
+
+## Remove unique identifier .xx from heatmap data
+rownames(mat) <- sub("\\.[0-9]*", "", rownames(mat))
+iv <- match(rownames(mat), gene_id$ensembl_gene_id)
+head(gene_id[iv,])
+
 pheatmap(mat, scale="row", annotation_col = annot,fontsize=6, main = paste("Heatmap of top 50 most variable genes:", contrast[2], "vs", contrast[3]))
 dev.off()
 
