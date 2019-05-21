@@ -117,24 +117,6 @@ rule deseq2_density:
         "../scripts/density_plot.R"
 
 
-rule GO:
-    input:
-        degFile="results/diffexp/pairwise/{contrast}.diffexp.tsv"
-    output:
-        "results/diffexp/pairwise/GOterms/{{contrast}}.diffexp.downFC.{FC}.adjp.{adjp}_BP_GO.txt".format(FC = config["FC"],adjp=config["adjp"]),
-        "results/diffexp/pairwise/GOterms/{{contrast}}.diffexp.upFC.{FC}.adjp.{adjp}_BP_GO.txt".format(FC = config["FC"],adjp=config["adjp"])
-    params:
-        contrast = get_contrast,
-        assembly = config["assembly"],
-        printTree = config["printTree"],
-        FC = config["FC"],
-        adjp = config["adjp"]
-    conda:
-        "../envs/runGO.yaml"
-    script:
-        "../scripts/runGOforDESeq2.R"
-
-
 rule volcano:
     input:
         degFile="results/diffexp/pairwise/{contrast}.diffexp.tsv"
