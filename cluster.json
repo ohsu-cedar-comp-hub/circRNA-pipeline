@@ -78,14 +78,6 @@
         "o" : "logs/deseq2_density/deseq2_density_%j.out",
         "mem" : 30000
     },
-    "GO" :
-    {
-        "J" : "GO",
-        "e" : "logs/GO/GO%j.err",
-        "o" : "logs/GO/GO%j.out",
-        "c" : 6,
-        "mem" : 64000
-    },
     "volcano" :
     {
         "J" : "volcano",
