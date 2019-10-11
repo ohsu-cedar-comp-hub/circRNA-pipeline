@@ -12,7 +12,7 @@ rule deseq2_init:
         linear_model = config["linear_model"],
         contrast = get_contrast
     conda:
-        "../envs/permutation.yaml"
+        "../envs/deseq2.yaml"
     threads: get_deseq2_threads()
     script:
         "../scripts/deseq2-init.R"
@@ -47,7 +47,6 @@ rule deseq2_group:
         counts = "results/tables/{project_id}_ciri_junctioncounts.txt".format(project_id = project_id)
     output:
         pca="results/diffexp/group/LRT_pca.pdf",
-        sd_mean_plot="results/diffexp/group/LRT_sd_mean_plot.pdf",
         distance_plot = "results/diffexp/group/LRT_distance_plot.pdf",
         heatmap_plot = "results/diffexp/group/LRT_heatmap_plot.pdf",
         rds="results/diffexp/group/LRT_all.rds",
@@ -82,7 +81,7 @@ rule deseq2_QC:
         colors = config['colors']['rcolorbrewer'],
         discrete = config['colors']['discrete']
     conda:
-        "../envs/deseq2_QC.yaml"
+        "../envs/deseq2.yaml"
     script:
         "../scripts/QC.R"
 
@@ -145,7 +144,7 @@ rule permutation:
         sample_id = config["sample_id"],
         linear_model = config["linear_model"]
     conda:
-        "../envs/permutation.yaml"
+        "../envs/deseq2.yaml"
     script:
         "../scripts/permutation_test.R"
 
