@@ -16,9 +16,6 @@ cat(sprintf(c('PCA plot: ',pca_plot)))
 labels <- snakemake@params[['pca_labels']]
 cat(sprintf(c('PCA Labels: ',labels)))
 
-sd_mean_plot <- snakemake@output[['sd_mean_plot']]
-cat(sprintf(c('SD Mean plot: ',sd_mean_plot,'\n')))
-
 distance_plot <- snakemake@output[['distance_plot']]
 cat(sprintf(c('Distance plot: ',distance_plot,'\n')))
 
