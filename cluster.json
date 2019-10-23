@@ -39,7 +39,7 @@
         "J" : "deseq2_init",
         "e" : "logs/deseq2_init/deseq2_init_%j.err",
         "o" : "logs/deseq2_init/deseq2_init_%j.out",
-        "c" : 20,
+        "c" : 8,
         "mem" : 80000
     },
     "deseq2_pairwise" :
